@@ -1,0 +1,62 @@
+version: '3.5'
+services:
+    factomd:
+        # Check https://hub.docker.com/r/factominc/factomd/tags for the more recent stable release.
+        image: factominc/factomd:v6.3.3-alpine
+        volumes:
+            # Volume where the blockchain is located.
+            - factom_database:/root/.factom/m2
+            # Volume that holds the factomd.conf file.
+            - ./config/factomd.conf:/root/.factom/private/factomd.conf:ro
+        expose:
+            # Factomd API
+            - 8088
+        ports:
+            # Control panel
+            - 8090:8090
+            # P2P
+            - 8108:8108
+        restart: unless-stopped
+        container_name: factomd
+    walletd:
+        # Check https://hub.docker.com/r/factominc/factom-walletd/tags for latest stable release
+        image: factominc/factom-walletd:v2.2.14-alpine
+        volumes:
+            # Volume where wallet information is stored
+            - factom_wallet:/root/.factom/wallet'
+            # Volume that holds the factomd.conf file
+            - ./config/factomd.conf:/root/.factom/private/factomd.conf:ro
+        expose:
+            # Wallet API
+            - 8089
+        depends_on:
+            - factomd
+        restart: unless-stopped
+        container_name: factom_walletd
+    pegnet:
+        # Check https://hub.docker.com/r/pegnet/pegnet/tags for latest stable release
+        image: pegnet/pegnet:v0.1.0-rc4
+        volumes:
+            - ./config/pegnet.ini:/root/.pegnet/defaultconfig.ini:ro
+            # ByteMap table
+            - pegnet:/root/.lxrhash
+        ports:
+            # Control panel
+            - 8080:8080
+            # Miner API
+            # - 8099:8099
+        depends_on:
+            - factomd
+            - walletd
+        command: ["./pegnet", "-s", "factomd:8088", "-w", "factom_walletd:8089"]
+        restart: unless-stopped
+        container_name: pegnet
+
+    
+volumes:
+    factom_database:
+        external: true
+    factom_wallet:
+        external: true
+    pegnet:
+        external: true
