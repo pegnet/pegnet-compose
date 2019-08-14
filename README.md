@@ -71,7 +71,7 @@ curl -X GET --data-binary \
 -H 'content-type:text/plain;' http://localhost:8089/v2
 ```
 
-#### 6. OPTIONAL: Create or add a FCT address
+#### 6. OPTIONAL: Create a FCT address
 
 If you do not already have a FCT address, you can create one in walletd.
 
