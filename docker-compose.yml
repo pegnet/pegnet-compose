@@ -27,9 +27,9 @@ services:
         image: factominc/factom-walletd:v2.2.14-alpine
         volumes:
             # Volume where wallet information is stored
-            - factom_wallet:/root/.factom/wallet'
+            - factom_wallet:/root/.factom/wallet
             # Volume that holds the factomd.conf file
-            - ./config/factomd.conf:/root/.factom/private/factomd.conf:ro
+            - ./config/factomd.conf:/root/.factom/m2/factomd.conf:ro
         expose:
             # Wallet API
             - 8089
