@@ -53,9 +53,9 @@ services:
         depends_on:
             - factomd
             - walletd
-        command: ["./pegnet", "-s", "factomd:8088", "-w", "factom_walletd:8089"]
-        restart: unless-stopped
         container_name: pegnet
+        entrypoint: ./pegnet
+        command: ["-s", "factomd:8088", "-w", "factom_walletd:8089", "--miners", "${MINERS:-1}"]
         logging: *Logging
     
 volumes:
