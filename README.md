@@ -31,7 +31,7 @@ docker volume create pegnet
 
 #### 3. Create a factomd.conf
 
-It is necessary to create a factomd.conf file in the config folder. Most people will simply be able to make a copy of the example config. The default settings should work out of the box
+It is necessary to create a factomd.conf file in the config folder. The default settings should work out of the box for most people.
 
 ```
 cp config/factomd.conf.EXAMPLE config/factomd.conf
@@ -51,9 +51,9 @@ docker-compose run --name walletd -d walletd
 
 ```
 docker exec -it walletd \
-    curl -X GET \
-    --data-binary '{"jsonrpc": "2.0", "id": 0, "method": "generate-ec-address"}' \
-    -H 'content-type:text/plain;' http://localhost:8089/v2
+curl -X GET \
+--data-binary '{"jsonrpc": "2.0", "id": 0, "method": "generate-ec-address"}' \
+-H 'content-type:text/plain;' http://localhost:8089/v2
 ```
 
 Copy down the public address you see in the output as you will need it later. It should begin with `EC`.
@@ -66,9 +66,9 @@ Replace the secret key with your own secret key. It should begin with `Es`. Note
 
 ```
 docker exec -it walletd \
-    curl -X GET --data-binary \
-    '{"jsonrpc": "2.0", "id": 0, "method": "import-addresses", "params":{"addresses":[{"secret":"Es3tXbGBVKZDhUWzDKzQtg4rcpmmHPXAY9vxSM2JddwJSD5td3f8"}]}}' \
-    -H 'content-type:text/plain;' http://localhost:8089/v2
+curl -X GET --data-binary \
+'{"jsonrpc": "2.0", "id": 0, "method": "import-addresses", "params":{"addresses":[{"secret":"Es3tXbGBVKZDhUWzDKzQtg4rcpmmHPXAY9vxSM2JddwJSD5td3f8"}]}}' \
+-H 'content-type:text/plain;' http://localhost:8089/v2
 ```
 
 #### 6. OPTIONAL: Create or add a FCT address
@@ -77,9 +77,9 @@ If you do not already have a FCT address, you can create one in walletd.
 
 ```
 docker exec -it walletd \
-    curl -X GET \
-    --data-binary '{"jsonrpc": "2.0", "id": 0, "method": "generate-factoid-address"}' \
-    -H 'content-type:text/plain;' http://localhost:8089/v2
+curl -X GET \
+--data-binary '{"jsonrpc": "2.0", "id": 0, "method": "generate-factoid-address"}' \
+-H 'content-type:text/plain;' http://localhost:8089/v2
 ```
 
 Copy down the public address, you will need it later.
@@ -133,8 +133,8 @@ You can also track it at the command line with the following command.
 
 ```
 docker exec -it factomd \
-    curl -X POST --data-binary \
-    '{"jsonrpc": "2.0", "id": 0, "method": "heights"}' -H 'content-type:text/plain;' http://localhost:8088/v2
+curl -X POST --data-binary \
+'{"jsonrpc": "2.0", "id": 0, "method": "heights"}' -H 'content-type:text/plain;' http://localhost:8088/v2
 ```
 
 It has finished syncing when all the heights are the same.
