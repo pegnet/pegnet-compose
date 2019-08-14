@@ -1,4 +1,4 @@
-version: '3.5'
+version: '3'
 services:
     factomd:
         # Check https://hub.docker.com/r/factominc/factomd/tags for the more recent stable release.
