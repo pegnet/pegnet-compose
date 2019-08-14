@@ -18,6 +18,10 @@ services:
             - 8108:8108
         restart: unless-stopped
         container_name: factomd
+        logging: &Logging
+            options:
+                max-size: "500k"
+                max-file: "10"
     walletd:
         # Check https://hub.docker.com/r/factominc/factom-walletd/tags for latest stable release
         image: factominc/factom-walletd:v2.2.14-alpine
@@ -33,6 +37,7 @@ services:
             - factomd
         restart: unless-stopped
         container_name: factom_walletd
+        logging: *Logging
     pegnet:
         # Check https://hub.docker.com/r/pegnet/pegnet/tags for latest stable release
         image: pegnet/pegnet:v0.1.0-rc4
@@ -51,7 +56,7 @@ services:
         command: ["./pegnet", "-s", "factomd:8088", "-w", "factom_walletd:8089"]
         restart: unless-stopped
         container_name: pegnet
-
+        logging: *Logging
     
 volumes:
     factom_database:
