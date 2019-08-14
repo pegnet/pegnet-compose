@@ -11,7 +11,7 @@ _NOTE: PegNet Compose is currently configured to join the PegNet testnet. This w
 
 ## Setup
 
-This is the initial setup process. You will only need to this once.
+This is the initial setup process. You will only need to do this once.
 
 #### 1. Clone and cd into this repo
 
@@ -47,9 +47,7 @@ docker-compose run --name walletd -d walletd
 
 #### 5. Create or add an entry credit address
 
-The command you run here depends on whether you already have an entry credit address
-
-##### a.Create an entry credit address
+##### a. Create an entry credit address
 
 ```
 docker exec -it walletd \
@@ -84,9 +82,15 @@ docker exec -it walletd \
     -H 'content-type:text/plain;' http://localhost:8089/v2
 ```
 
-Copy down the public address, you will need it on the next step.
+Copy down the public address, you will need it later.
 
-#### 7. Create the PegNet config file
+#### 7. Fund your entry credit address
+
+The cheapest way to buy entry credits is to create them yourself using FCT. You can do that using several different Factom wallets, including [MyFactomWallet](https://myfactomwallet.com/#/) (web), [Enterprise Wallet](https://docs.factomprotocol.org/wallets/enterprise-wallet) (desktop) or walletd (cli), which we have running here.
+
+Alternatively, you can buy EC directly from [Factom Inc](https://shop.factom.com/) or [De Facto](https://ec.de-facto.pro/) who will deposit EC directly into your entry credit address.
+
+#### 8. Create the PegNet config file
 
 Copy the example config file to use as a template.
 
@@ -102,11 +106,11 @@ nano config/pegnet.ini
 
 Change the following items:
 
--   `ECAddress` to the public EC address crated or added to the wallet in step 5.
+-   `ECAddress` to the public EC address created or added to the wallet in step 5.
 -   `FCTAddress` and `CoinbaseAddress` to your FCT address.
 -   `IdentityChain` to any alphanumeric string (no spaces!) that will help you identity your miner amongst the rest.
 
-Your miner needs to be able to get asset prices from an oracle. The oracles are `APILayer`, `ExchangeRatesAPI` and `OpenExchangeRates`. To use an oracle, change the setting from 0 to 1. For exampe:
+Your miner needs to be able to get asset prices from an oracle. The oracles are `APILayer`, `ExchangeRatesAPI` and `OpenExchangeRates`. To use an oracle, change the setting from 0 to 1. For example:
 
 ```
 APILayer=1
@@ -119,7 +123,7 @@ Finally, you need to get an API key for your chosen oracle.
 -   An `OpenExchangeRatesKey` can be obtained [here](https://openexchangerates.org/).
 -   An `APILayerKey` csn be obtained [here](https://currencylayer.com/).
 
-#### 8. Wait for factomd to finish syncing
+#### 9. Wait for factomd to finish syncing
 
 The initial sync might take anywhere from 12 to 48 hours. You can close the shell whilst this is happening if you wish.
 
@@ -135,7 +139,7 @@ docker exec -it factomd \
 
 It has finished syncing when all the heights are the same.
 
-#### 9. Stop and remove the running containers
+#### 10. Stop and remove the running containers
 
 We'll bring everything back up at the same time later when starting PegNet.
 
@@ -153,13 +157,13 @@ Make sure you're in the pegnet-compose directory.
 MINERS=4 docker-compose up -d
 ```
 
-The first time you start PegNet it will build a ByteMap table. This can take 10 to 15 minutes. The ByteMap table is persisted to disc, so it will not need to build it again when you start it in the future.
-
 Check the log output to make sure it is healthy.
 
 ```
 docker-compose logs
 ```
+
+The first time you start PegNet it will build a ByteMap table. This can take 10 to 15 minutes. The ByteMap table is persisted to disc, so it will not need to build it again when you start it in the future.
 
 ## Stop
 
@@ -169,10 +173,10 @@ You can stop and remove the pegnet container without stopping factomd and wallet
 docker stop pegnet && docker rm pegnet
 ```
 
-If you ever want to bring everything down.
+If you ever want to take everything down.
 
 ```
 docker-compose down
 ```
 
-In either case, you can start it all again with the [start](#start) command above.
+In either case, you can to bring it all back online with the [start](#start) command above.
