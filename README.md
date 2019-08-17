@@ -2,8 +2,6 @@
 
 PegNet Compose leverages Docker Compose to help you start and manage a PegNet miner.
 
-_NOTE: PegNet Compose is currently configured to join the PegNet testnet. This will be updated when mainnet is launched._
-
 ## Requirements
 
 -   [Docker Engine 1.13.0+](https://docs.docker.com/install/)
@@ -110,18 +108,7 @@ Change the following items:
 -   `FCTAddress` and `CoinbaseAddress` to your FCT address.
 -   `IdentityChain` to any alphanumeric string (no spaces!) that will help you identity your miner amongst the rest.
 
-Your miner needs to be able to get asset prices from an oracle. The oracles are `APILayer`, `ExchangeRatesAPI` and `OpenExchangeRates`. To use an oracle, change the setting from 0 to 1. For example:
-
-```
-APILayer=1
-ExchangeRatesAPI=0
-OpenExchangeRates=0
-```
-
-Finally, you need to get an API key for your chosen oracle.
-
--   An `OpenExchangeRatesKey` can be obtained [here](https://openexchangerates.org/).
--   An `APILayerKey` csn be obtained [here](https://currencylayer.com/).
+Your miner needs to be able to get asset prices from an oracle. Complete the `[Oracle]` and `[OracleDataSources]` section of the config. The comments in the config file will guide you.
 
 #### 9. Wait for factomd to finish syncing
 
@@ -157,7 +144,7 @@ Make sure you're in the pegnet-compose directory.
 MINERS=4 docker-compose up -d
 ```
 
-Check the log output to make sure it is healthy.
+Check the log output to make sure it is healthy. Mining will start once factomd begins to make progress, which may take a while.
 
 ```
 docker-compose logs

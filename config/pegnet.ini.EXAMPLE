@@ -1,4 +1,3 @@
-
 [Debug]
 # Randomize adds a random factor +/- the give percent.  3.1 for 3.1%
   Randomize=0.0
@@ -8,48 +7,78 @@
   LogFile=
 
 [Miner]
+  # Factom Connection Options
+  FactomdLocation="factomd:8088"
+  WalletdLocation="factom_walletd:8089"
 
   # Options to setup a networked miner to a coordinator
   MiningCoordinatorPort=:7777
   MiningCoordinatorHost=localhost:7777
+
   # This is used to authenticate via challenge + response to the coordinator.
   # If the coordinator and miner have different secrets, they will not connect to each
   # other.
   CoordinatorSecret="hunter2"
   UseCoordinatorAuthentication=true
 
-  NetworkType=MAIN
   NumberOfMiners=1
 # The number of records to submit per block. The top N records are chosen, where N is the config value
   RecordsPerBlock=3
+
+# The targeted cutoff. If our difficulty will land us in the top 300 (estimated), we will submit our OPR.
+# <=0 will disable this check.
+  SubmissionCutOff=200
   Protocol=PegNet 
-  Network=TestNet
+  Network=MainNet
 
-# Input your public EC and FCT addresses here. 
-  ECAddress=ChangeMe
-  FCTAddress=ChangeMe
-  CoinbaseAddress=ChangeMe
+  ECAddress=CHANGEME
+  FCTAddress=CHANGEME
+  CoinbaseAddress=CHANGEME
+  IdentityChain=CHANGEME
 
-# The identity chain key is used to help you identify this daemon.
-  IdentityChain=ChangeMe
+# This section must ONLY include data sources and their priorities. Any configuration
+# related to a source should be specified in the [Oracle] section.
+# -1 == disabled
+[OracleDataSources]
+  # Always rank this the highest at 0. It pegs USD at 1USD = 1USD.
+  # This is not a website, this is a hardcoded '1'. Don't change this
+  FixedUSD=0
 
+  # ----------------
+  # Paid Sources
+  APILayer=-1
+  1Forge=-1
+
+  # ----------------
+  # Free sources, signup required
+  CoinMarketCap=-1
+  #   Hourly data for the commodities
+  OpenExchangeRates=9
+
+  # ----------------
+  #  Free sources, no signup required
+  FreeForexAPI=3
+  AlternativeMe=1
+  CoinCap=-1
+
+  #   Web scraping, rank it low
+  Kitco=-1
+
+# Insert keys for any data source you ahve specified above where the priority is > -1
 [Oracle]
 
-  # Choose where the get the different asset pricing from by putting a `1`.
-  # Currencies
-
-  APILayer=1
-  ExchangeRatesAPI=0
-  OpenExchangeRates=0
-
-  # Must get a key from here https://currencylayer.com/
-  APILayerKey=ChangeMe
-
+  # Must get a key from here https://apilayer.com/
+  APILayerKey=CHANGEME
   # Must get an api key here https://openexchangerates.org/
-  OpenExchangeRatesKey=ChangeMe
+  OpenExchangeRatesKey=CHANGEME
+  # Must get an api key here https://coinmarketcap.com/api/
+  CoinMarketCapKey=CHANGEME
+  # Must get an api key here https://1forge.com/forex-data-api
+  1ForgeKey=CHANGEME
 
-  # Crypto
-  CoinCap=1
 
-  # Commodities
-  Kitco=1
+# This section should be done with caution. There is no error handling
+# if you put in a bad order or use datasources that you did not enable.
+[OracleAssetDataSourcesPriority]
+  # Example to overrride BTC order
+  # XBT=CoinMarketCap,OpenExchangeRates,CoinCap

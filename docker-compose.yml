@@ -40,7 +40,7 @@ services:
         logging: *Logging
     pegnet:
         # Check https://hub.docker.com/r/pegnet/pegnet/tags for latest stable release
-        image: pegnet/pegnet:v0.1.0-rc4
+        image: pegnet/pegnet:v0.1.0
         volumes:
             - ./config/pegnet.ini:/root/.pegnet/defaultconfig.ini:ro
             # ByteMap table
@@ -55,7 +55,7 @@ services:
             - walletd
         container_name: pegnet
         entrypoint: ./pegnet
-        command: ["-s", "factomd:8088", "-w", "factom_walletd:8089", "--miners", "${MINERS:-1}"]
+        command: ["--miners", "${MINERS:-1}"]
         logging: *Logging
     
 volumes:
