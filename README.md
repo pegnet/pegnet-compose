@@ -126,12 +126,12 @@ curl -X POST --data-binary \
 
 It has finished syncing when all the heights are the same.
 
-#### 10. Stop and remove the running containers
+#### 10. Stop and remove walletd
 
-We'll bring everything back up at the same time later when starting PegNet.
+We will bring it up again later when we start PegNet.
 
 ```
-docker-compose down
+docker stop walletd && docker rm walletd
 ```
 
 ## Start
