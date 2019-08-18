@@ -40,7 +40,7 @@ services:
         logging: *Logging
     pegnet:
         # Check https://hub.docker.com/r/pegnet/pegnet/tags for latest stable release
-        image: pegnet/pegnet:v0.1.0
+        image: pegnet/pegnet:v0.1.1
         volumes:
             - ./config/pegnet.ini:/root/.pegnet/defaultconfig.ini:ro
             # ByteMap table
