@@ -40,7 +40,7 @@ cp config/factomd.conf.EXAMPLE config/factomd.conf
 Begin syncing the blockchain and start the wallet. This command looks like it only brings walletd up, but it brings factomd up too.
 
 ```
-docker-compose run --name walletd -d walletd
+docker-compose up -d walletd
 ```
 
 #### 5. Create or add an entry credit address
@@ -125,14 +125,6 @@ curl -X POST --data-binary \
 ```
 
 It has finished syncing when all the heights are the same.
-
-#### 10. Stop and remove walletd
-
-We will bring it up again later when we start PegNet.
-
-```
-docker stop walletd && docker rm walletd
-```
 
 ## Start
 
