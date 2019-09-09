@@ -17,7 +17,7 @@ This is the initial setup process. You will only need to do this once.
 git clone https://github.com/pegnet/pegnet-compose.git && cd pegnet-compose
 ```
 
-#### 2. Install the requirements
+#### 2. Install Docker and Docker-Compose (skip this if already installed)
 
 ##### Linux:
 - run `sudo ./get_started.sh` (easiest way)
@@ -28,6 +28,9 @@ or
 ```shell script
 sudo apt-get update && sudo apt-get install curl python3 apt-transport-https ca-certificates software-properties-common -y && curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh && sudo usermod -aG docker pi && sudo pip3 install docker-compose
 ```
+
+
+After installing Docker it's better to reboot the machine
 
 ##### Windows:
 - Install Docker and Docker Compose (https://docs.docker.com/docker-for-windows/install/)
