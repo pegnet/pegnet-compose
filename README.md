@@ -20,17 +20,23 @@ git clone https://github.com/pegnet/pegnet-compose.git && cd pegnet-compose
 #### 2. Install Docker and Docker-Compose (skip this if already installed)
 
 ##### Linux:
-- run `sudo ./get_started.sh` (easiest way)
+
+- run `chmod +x get_started.sh && sudo ./get_started.sh` (easiest way)
 
 or
 
 - copy and run the following commands:
 ```shell script
-sudo apt-get update && sudo apt-get install curl python3 apt-transport-https ca-certificates software-properties-common -y && curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh && sudo usermod -aG docker pi && sudo pip3 install docker-compose
+sudo apt-get update && sudo apt-get install curl python3 apt-transport-https ca-certificates software-properties-common -y && curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh && sudo usermod -aG docker "$USER" && sudo pip3 install docker-compose && chmod +x volumes/factomd/bootstrap.sh
 ```
 
+&nbsp;
 
-After installing Docker it's better to reboot the machine
+###### Reboot the machine
+
+- run `sudo reboot`
+
+&nbsp;
 
 ##### Windows:
 - Install Docker and Docker Compose (https://docs.docker.com/docker-for-windows/install/)
@@ -39,13 +45,13 @@ After installing Docker it's better to reboot the machine
 #### 3. Get the bootstrap file (skip this if you want to sync the blockchain from scratch)
 
 ##### Linux:
-- run `cd volumes/factomd; sudo ./bootstrap.sh`
+- run `cd volumes/factomd && sudo ./bootstrap.sh && cd -`
 
 ##### Windows:
 - download [this file](https://factom-public-files.s3.us-east-2.amazonaws.com/bootstrap.zip) and unzip it into `volumes/factomd/main-database/ldb/MAIN/`
 
 
-#### 4. Config files
+#### 4. Check `factomd.conf`
 The default file `config/factomd.conf` should work for most people, however feel free to edit it to fit your needs.
 
 
@@ -150,6 +156,17 @@ MINERS=4 docker-compose up -d pegnet
 docker-compose up -d pegnet-netcoordinator
 ```
 
+> Want to run factomd and walletd on a different machine?
+> 
+> Edit the following settings on your `config/pegnet.ini`:
+>
+>```ini
+>FactomdLocation="factomd:8088"
+>WalletdLocation="factom_walletd:8089"
+>```
+
+&nbsp;
+
 ###### On miner machines:
 
 You will need to edit the following setting on `config/pegnet.ini` to the IP/Port of your coordinator:
@@ -166,7 +183,7 @@ docker-compose up -d pegnet-netminer
 
 #### Checking the logs
 
-Check the log output to make sure it is healthy. Mining will start once factomd begins to make progress, which may take a while.
+Check the log output to make sure it is healthy. 
 
 ```
 docker-compose logs

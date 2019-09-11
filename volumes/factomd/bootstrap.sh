@@ -11,7 +11,17 @@ if [[ -d "${BASH_SOURCE%/*}/main-database/ldb/MAIN/factoid_level.db/" ]]; then
 fi
 
 apt-get install -y unzip wget
-wget https://factom-public-files.s3.us-east-2.amazonaws.com/bootstrap.zip
+
+if [[ -f "${BASH_SOURCE%/*}/bootstrap.zip" ]]; then
+  read -p "The bootstrap.zip file already exists, do you want to re-download it? y/N  " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]; then
+    rm -f bootstrap.zip
+    wget https://factom-public-files.s3.us-east-2.amazonaws.com/bootstrap.zip
+  fi
+else
+  wget https://factom-public-files.s3.us-east-2.amazonaws.com/bootstrap.zip
+fi
 
 mkdir -p "${BASH_SOURCE%/*}/main-database/ldb/MAIN/"
 unzip bootstrap.zip -d "${BASH_SOURCE%/*}/main-database/ldb/MAIN/"
