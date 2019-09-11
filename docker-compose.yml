@@ -40,6 +40,14 @@ services:
         restart: unless-stopped
         container_name: factom_walletd
         logging: *Logging
+    factom-cli:
+        build:
+          context: https://github.com/FactomProject/factom-cli.git
+          dockerfile: Dockerfile.alpine
+        volumes:
+          - ./config/factomd.conf:/root/.factom/m2/factomd.conf:ro
+        container_name: factom_cli
+        logging: *Logging
     pegnet:
         build:
           context: https://github.com/pegnet/pegnet.git
