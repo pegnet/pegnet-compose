@@ -21,13 +21,13 @@ git clone https://github.com/pegnet/pegnet-compose.git && cd pegnet-compose
 
 ##### Linux:
 
-- run `chmod +x get_started.sh && sudo ./get_started.sh` (easiest way)
+- run `sudo ./get_started.sh` (easiest way)
 
 or
 
 - copy and run the following commands:
 ```shell script
-sudo apt-get update && sudo apt-get install curl python3 apt-transport-https ca-certificates software-properties-common -y && curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh && sudo usermod -aG docker "$USER" && sudo pip3 install docker-compose && chmod +x volumes/factomd/bootstrap.sh
+sudo apt-get update && sudo apt-get install curl python3 apt-transport-https ca-certificates software-properties-common -y && curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh && sudo usermod -aG docker "$USER" && sudo pip3 install docker-compose
 ```
 
 &nbsp;
