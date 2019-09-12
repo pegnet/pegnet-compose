@@ -1,0 +1,98 @@
+version: '3'
+services:
+    factomd:
+        build:
+            context: https://github.com/FactomProject/factomd.git
+            dockerfile: Dockerfile.alpine
+        volumes:
+            # Volume where the blockchain is located.
+            - ./volumes/factomd:/root/.factom/m2
+            # Volume that holds the factomd.conf file.
+            - ./config/factomd.conf:/root/.factom/m2/factomd.conf:ro
+        expose:
+            # Factomd API
+            - 8088
+        ports:
+            # Control panel
+            - 8090:8090
+            # P2P
+            - 8108:8108
+        restart: unless-stopped
+        container_name: factomd
+        logging: &Logging
+            options:
+                max-size: "500k"
+                max-file: "10"
+    walletd:
+        build:
+          context: https://github.com/FactomProject/factom-walletd.git
+          dockerfile: Dockerfile.alpine
+        volumes:
+            # Volume where wallet information is stored
+            - ./volumes/walletd:/root/.factom/wallet
+            # Volume that holds the factomd.conf file
+            - ./config/factomd.conf:/root/.factom/m2/factomd.conf:ro
+        expose:
+            # Wallet API
+            - 8089
+        depends_on:
+            - factomd
+        restart: unless-stopped
+        container_name: factom_walletd
+        logging: *Logging
+    factom-cli:
+        build:
+          context: https://github.com/FactomProject/factom-cli.git
+          dockerfile: Dockerfile.alpine
+        volumes:
+          - ./config/factomd.conf:/root/.factom/m2/factomd.conf:ro
+        container_name: factom_cli
+        logging: *Logging
+    pegnet:
+        build:
+          context: https://github.com/pegnet/pegnet.git
+        volumes:
+            - ./config/pegnet.ini:/root/.pegnet/defaultconfig.ini:ro
+            # ByteMap table
+            - ./volumes/pegnet:/root/.lxrhash
+        ports:
+            # Control panel
+            - 8080:8080
+            # Miner API
+            # - 8099:8099
+        container_name: pegnet
+        entrypoint: ./pegnet
+        command: ["--miners", "${MINERS:-1}", '--log', '${LOG:-debug}']
+        logging: *Logging
+    pegnet-netcoordinator:
+        build:
+            context: https://github.com/pegnet/pegnet.git
+        volumes:
+            - ./config/pegnet.ini:/root/.pegnet/defaultconfig.ini:ro
+            # ByteMap table
+            - ./volumes/pegnet:/root/.lxrhash
+        ports:
+            # Control panel
+            - 8080:8080
+            # Miner API
+            - 7777:7777
+        container_name: pegnet
+        entrypoint: ./pegnet
+        command: 'netcoordinator'
+        logging: *Logging
+    pegnet-netminer:
+        build:
+            context: https://github.com/pegnet/pegnet.git
+        volumes:
+            - ./config/pegnet.ini:/root/.pegnet/defaultconfig.ini:ro
+            # ByteMap table
+            - ./volumes/pegnet:/root/.lxrhash
+        ports:
+            # Control panel
+            - 8080:8080
+            # Miner API
+            # - 8099:8099
+        container_name: pegnet
+        entrypoint: ./pegnet
+        command: ["netminer", "--miners", "${MINERS:-1}"]
+        logging: *Logging
