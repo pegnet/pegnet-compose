@@ -72,7 +72,7 @@ This might take a couple of hours if you used the bootstrap file, otherwise it m
 You can also track it at the command line with the following command.
 
 ```shell script
-docker-compose exec factomd curl -X POST --data-binary '{"jsonrpc": "2.0", "id": 0, "method": "heights"}' -H 'content-type:text/plain;' http://localhost:8088/v2
+docker-compose run --rm factom-cli get heights
 ```
 
 It has finished syncing when all the heights are the same.
@@ -86,7 +86,7 @@ It has finished syncing when all the heights are the same.
 ##### a. Create an entry credit address
 
 ```shell script
-docker-compose exec walletd curl -X GET --data-binary '{"jsonrpc": "2.0", "id": 0, "method": "generate-ec-address"}' -H 'content-type:text/plain;' http://localhost:8089/v2
+docker-compose run --rm factom-cli newecaddress
 ```
 
 Copy down the public address you see in the output as you will need it later. It should begin with `EC`.
@@ -95,10 +95,10 @@ Copy down the public address you see in the output as you will need it later. It
 
 ##### b. Add an entry credit address
 
-Replace the secret key with your own secret key. It should begin with `Es`. Note: be careful not to change the formatting when copying over your secret key. Check the quotation marks.
+Replace the secret key with your own secret key. It should begin with `Es`.
 
 ```shell script
-docker-compose exec walletd curl -X GET --data-binary '{"jsonrpc": "2.0", "id": 0, "method": "import-addresses", "params":{"addresses":[{"secret":"INSERT YOUR SECRET KEY HERE"}]}}' -H 'content-type:text/plain;' http://localhost:8089/v2
+docker-compose run --rm factom-cli importaddress INSERT_YOUR_SECRET_KEY_HERE
 ```
 
 ##### 9. Create a FCT address (if you don't already have one)
@@ -106,7 +106,7 @@ docker-compose exec walletd curl -X GET --data-binary '{"jsonrpc": "2.0", "id": 
 If you do not already have a FCT address, you can create one in walletd.
 
 ```shell script
-docker-compose exec walletd curl -X GET --data-binary '{"jsonrpc": "2.0", "id": 0, "method": "generate-factoid-address"}' -H 'content-type:text/plain;' http://localhost:8089/v2
+docker-compose run --rm factom-cli newfctaddress
 ```
 
 Copy down the public address, you will need it later.
