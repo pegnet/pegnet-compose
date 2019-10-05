@@ -45,6 +45,7 @@ services:
             context: https://github.com/pegnet/pegnetd.git
             dockerfile: Dockerfile
         volumes:
+            - ./config/pegnetd.toml:/go/src/github.com/pegnet/pegnetd/pegnetd-conf.toml:ro
             - ./volumes/pegnetd:/root/.pegnetd
             - ./volumes/pegnet:/root/.lxrhash
         depends_on:
