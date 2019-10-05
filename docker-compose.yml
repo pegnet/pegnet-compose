@@ -54,7 +54,7 @@ services:
             # Wallet API
             - 8070
         restart: unless-stopped
-        entrypoint: ./pegnetd
+        entrypoint: pegnetd
         container_name: pegnetd
         logging: *Logging
     factom-cli:
