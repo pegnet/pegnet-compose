@@ -94,7 +94,7 @@ services:
             - 8080:8080
             # Miner API
             - 7777:7777
-        container_name: pegnet
+        container_name: pegnet_coordinator
         entrypoint: ./pegnet
         command: "netcoordinator"
         logging: *Logging
