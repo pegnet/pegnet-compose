@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
     factomd:
         build:
@@ -25,8 +25,8 @@ services:
                 max-file: "10"
     walletd:
         build:
-          context: https://github.com/FactomProject/factom-walletd.git
-          dockerfile: Dockerfile.alpine
+            context: https://github.com/FactomProject/factom-walletd.git
+            dockerfile: Dockerfile.alpine
         volumes:
             # Volume where wallet information is stored
             - ./volumes/walletd:/root/.factom/wallet
@@ -40,17 +40,35 @@ services:
         restart: unless-stopped
         container_name: factom_walletd
         logging: *Logging
+    pegnetd:
+        build:
+            context: https://github.com/pegnet/pegnetd.git
+            dockerfile: Dockerfile
+        volumes:
+            - ./config/pegnetd.toml:/go/src/github.com/pegnet/pegnetd/pegnetd-conf.toml:ro
+            - ./volumes/pegnetd:/root/.pegnetd
+            - ./volumes/pegnet:/root/.lxrhash
+        depends_on:
+            - factomd
+            - walletd
+        expose:
+            # Wallet API
+            - 8070
+        restart: unless-stopped
+        entrypoint: pegnetd
+        container_name: pegnetd
+        logging: *Logging
     factom-cli:
         build:
-          context: https://github.com/FactomProject/factom-cli.git
-          dockerfile: Dockerfile.alpine
+            context: https://github.com/FactomProject/factom-cli.git
+            dockerfile: Dockerfile.alpine
         volumes:
-          - ./config/factomd.conf:/root/.factom/m2/factomd.conf:ro
+            - ./config/factomd.conf:/root/.factom/m2/factomd.conf:ro
         container_name: factom_cli
         logging: *Logging
     pegnet:
         build:
-          context: https://github.com/pegnet/pegnet.git
+            context: https://github.com/pegnet/pegnet.git
         volumes:
             - ./config/pegnet.ini:/root/.pegnet/defaultconfig.ini:ro
             # ByteMap table
@@ -62,7 +80,7 @@ services:
             # - 8099:8099
         container_name: pegnet
         entrypoint: ./pegnet
-        command: ["--miners", "${MINERS:-1}", '--log', '${LOG:-debug}']
+        command: ["--miners", "${MINERS:-1}", "--log", "${LOG:-debug}"]
         logging: *Logging
     pegnet-netcoordinator:
         build:
@@ -76,9 +94,9 @@ services:
             - 8080:8080
             # Miner API
             - 7777:7777
-        container_name: pegnet
+        container_name: pegnet_coordinator
         entrypoint: ./pegnet
-        command: 'netcoordinator'
+        command: "netcoordinator"
         logging: *Logging
     pegnet-netminer:
         build:

@@ -133,6 +133,22 @@ Change the following items:
 
 Your miner needs to be able to get asset prices from an oracle. Complete the `[Oracle]` and `[OracleDataSources]` section of the config. The comments in the config file will guide you.
 
+#### 12. Start pegnetd and build the bytemap table
+
+```
+docker-compose up -d pegnetd
+```
+
+#### 13. Wait for the bytemap table to finish building
+
+You can check its progress with the command below. Once it has completed Pass 4 you are ready to proceed.
+
+```
+docker-compose logs pegnetd
+```
+
+If you already have a PegNet miner running on the same machine (for example, if you are upgrading for pM2), then you should not need to wait. PegNet and pegnetd will share the same bytemap table.
+
 ## Start
 
 #### Starting the miners
@@ -206,3 +222,17 @@ docker-compose down
 ```
 
 In either case, you can to bring it all back online with the [start](#start) command above.
+
+## Pegnetd CLI
+
+You can use pegnetd to send transaction and convert pAssets.
+
+```
+docker-compose run --rm pegnetd [command]
+```
+
+For guidance on how to use pegnetd, use the help command.
+
+```
+docker-compose run --rm pegnetd help
+```
